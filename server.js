@@ -45,9 +45,27 @@ app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/auth', auth);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, console.log('Server running in', process.env.NODE_ENV, 'mode on port', PORT));
+const server = app.listen(PORT, console.log(
+    'Server running in', 
+    "on" + process.env.HOST + ":" + PORT ));
 
 process.on('unhandleRejection', (err,promise)=>{
     console.log(`Error ${err.message}`);
     server.close(()=>process.exit(1));
 })
+
+const swaggerOptions = {
+    swaggerDefinition:{
+        openapi: '3.0.0',
+        info: {
+            title: 'Library API',
+            version: '1.0.0',
+            description: 'Restaurant Reservation API'
+        },
+        servers: [
+            {
+                url: process.env.HOST + ":" + PORT + '/api/v1' 
+            }
+        ]
+    }
+}
